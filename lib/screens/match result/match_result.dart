@@ -17,9 +17,6 @@ class MatchResult extends StatefulWidget {
 class _MatchResultState extends State<MatchResult> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Removed initState and _matchesStream. 
-  // We will handle logic in the build method for real-time updates.
-
   void _showCitizenProfileDialog(BuildContext context, String nic) {
     showDialog(
       context: context,
@@ -50,7 +47,6 @@ class _MatchResultState extends State<MatchResult> {
       body: Container(
         color: kMainColor.withOpacity(0.6),
         padding: const EdgeInsets.all(12.0),
-        // STREAM 1: Listen to the Counter to get the latest Case ID
         child: StreamBuilder<DocumentSnapshot>(
           stream: _firestore.collection("Meta").doc("caseCounter").snapshots(),
           builder: (context, counterSnapshot) {
@@ -69,13 +65,12 @@ class _MatchResultState extends State<MatchResult> {
 
             final caseId = "case ${lastCaseNum.toString().padLeft(2, '0')}";
 
-            // STREAM 2: Listen to the Suspects collection for that Case ID
             return StreamBuilder<QuerySnapshot>(
               stream: _firestore
                   .collection("Cases")
                   .doc(caseId)
                   .collection("suspects")
-                  .snapshots(), // <--- snapshots() ensures real-time updates
+                  .snapshots(), 
               builder: (context, suspectsSnapshot) {
                 if (suspectsSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -88,7 +83,6 @@ class _MatchResultState extends State<MatchResult> {
                   );
                 }
 
-                // Map the documents to your model
                 final matches = docs.map((doc) {
                   final data = doc.data() as Map<String, dynamic>;
                   return MatchResultModel(
@@ -107,7 +101,7 @@ class _MatchResultState extends State<MatchResult> {
                     return MatchResultCard(
                       name: match.name,
                       matchPercentage: match.score * 100,
-                      matchTime: DateTime.now(), // Or use match.createdAt from DB
+                      matchTime: DateTime.now(), 
                       profileImageUrl: match.profileUrl,
                       onViewProfile: () {
                         _showCitizenProfileDialog(context, match.nic);
@@ -166,7 +160,7 @@ class _ProfileDialogBodyState extends State<_ProfileDialogBody> {
       final citizen = Citizen(
         nic: widget.nic,
         name: data['name'] ?? '',
-        passportId: int.tryParse(data['passportId'] ?? '') ?? 0,
+        passportId: int.tryParse(data['passportId'] ?? '') ?? 10,
         address: data['address'] ?? '',
         mobileNumber: int.tryParse(data['contact'] ?? '') ?? 0,
         profileUrl: data['profile_image'] ?? '',

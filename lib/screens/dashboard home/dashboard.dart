@@ -1,5 +1,4 @@
 import 'package:bio_metric_system/screens/dashboard%20home/user_profile_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bio_metric_system/screens/case%20management/case_management.dart';
@@ -14,7 +13,9 @@ import 'package:bio_metric_system/utilites/responsive.dart';
 import 'package:bio_metric_system/widgets/customDrawerMenu.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final String? loggedInUserId; 
+  
+  const Dashboard({super.key, this.loggedInUserId});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -33,19 +34,22 @@ class _DashboardState extends State<Dashboard> {
   ];
 
   Future<void> _handleProfileClick(BuildContext context) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String uid;
-    String email;
-
-    if (user != null) {
-      uid = user.uid;
-      email = user.email ?? "";
-    } else {
-      debugPrint("No user logged in. Using Test ID.");
-      uid = "TcGhAQnqFxXvistw3SsI"; 
-      email = "dewjithaluwihare890@gmail.com"; 
+    if (widget.loggedInUserId == null) {
+      showDialog(
+        context: context,
+        builder: (context) => const UserProfileDialog(
+          uid: "admin_id",
+          userEmail: "admin@system.local",
+          currentUserData: {
+            "name": "System Administrator",
+            "nic": "ADMIN-ACCESS",
+            "profile_image": "" 
+          },
+        ),
+      );
+      return;
     }
-
+    String uid = widget.loggedInUserId!; 
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -64,7 +68,7 @@ class _DashboardState extends State<Dashboard> {
           context: context,
           builder: (context) => UserProfileDialog(
             uid: uid,
-            userEmail: email,
+            userEmail: userData['email'] ?? "No Email", 
             currentUserData: userData,
           ),
         );

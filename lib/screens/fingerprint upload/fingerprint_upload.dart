@@ -37,7 +37,7 @@ class _FingerprintUploadState extends State<FingerprintUpload> {
 
       try {
         await Future.delayed(const Duration(seconds: 10));
-        final url = Uri.parse("http://192.168.1.2:5001/match");
+        final url = Uri.parse("http://192.168.1.12:5001/match");
         final response = await http.post(
           url,
           headers: {"Content-Type": "application/json"},

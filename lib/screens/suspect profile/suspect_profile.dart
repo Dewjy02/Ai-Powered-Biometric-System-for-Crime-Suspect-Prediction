@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data'; // Make sure this import is here
+import 'dart:typed_data'; 
 
 import 'package:bio_metric_system/model/citizen_model.dart';
 import 'package:bio_metric_system/screens/suspect%20profile/suspect_profile_card.dart';
-import 'package:bio_metric_system/utilites/colors.dart'; // <-- IMPORT ADDED
-import 'package:bio_metric_system/utilites/constant.dart'; // <-- IMPORT ADDED
+import 'package:bio_metric_system/utilites/colors.dart'; 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bio_metric_system/model/match_result_model.dart';
@@ -109,7 +108,6 @@ class _SuspectProfileState extends State<SuspectProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // --- THIS IS THE UPDATED SEARCH BAR ---
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SearchBar(
@@ -130,7 +128,6 @@ class _SuspectProfileState extends State<SuspectProfile> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 8)),
                 elevation: MaterialStateProperty.all(4),
                 
-                // --- LOGIC ADDED TO MAKE IT WORK ---
                 onSubmitted: (value) => _searchByNic(),
                 trailing: [
                   IconButton(
@@ -140,8 +137,6 @@ class _SuspectProfileState extends State<SuspectProfile> {
                 ],
               ),
             ),
-            // --- END OF UPDATED SEARCH BAR ---
-
             if (_searchResultFuture != null)
               FutureBuilder<Citizen?>(
                 future: _searchResultFuture,

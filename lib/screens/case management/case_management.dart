@@ -15,6 +15,10 @@ class CaseManagement extends StatefulWidget {
 class _CaseManagementState extends State<CaseManagement> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  late Stream<QuerySnapshot> _confirmedCasesStream;
+  late Stream<DocumentSnapshot> _caseCounterStream;
+  late Stream<QuerySnapshot> _closedCasesListStream;
+
   final TextEditingController _activeSearchController = TextEditingController();
   String _activeSearchQuery = "";
   bool _isActiveSearchVisible = false;
@@ -35,6 +39,18 @@ class _CaseManagementState extends State<CaseManagement> {
   ];
 
   final Map<String, String> _selectedCaseTypes = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _confirmedCasesStream = _firestore.collection('ConfirmedCases').snapshots();
+    _caseCounterStream =
+        _firestore.collection('Meta').doc('caseCounter').snapshots();
+    _closedCasesListStream = _firestore
+        .collection('ConfirmedCases')
+        .orderBy('confirmedAt', descending: true)
+        .snapshots();
+  }
 
   @override
   void dispose() {
@@ -100,6 +116,11 @@ class _CaseManagementState extends State<CaseManagement> {
         'matchScore': suspectData['score'],
         'confirmedAt': FieldValue.serverTimestamp(),
       });
+      if (_expandedCaseIds.contains(caseId)) {
+        setState(() {
+          _expandedCaseIds.remove(caseId);
+        });
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +159,7 @@ class _CaseManagementState extends State<CaseManagement> {
             Text("Case Closed: ${data['caseId'].toString().toUpperCase()}"),
             Text(
               data['caseType'],
-              style: const TextStyle(fontSize: 14, color: Colors.white),
+              style: const TextStyle(fontSize: 14, color: Colors.black),
             ),
           ],
         ),
@@ -155,9 +176,8 @@ class _CaseManagementState extends State<CaseManagement> {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.grey.shade200,
-                backgroundImage: imageBytes != null
-                    ? MemoryImage(imageBytes)
-                    : null,
+                backgroundImage:
+                    imageBytes != null ? MemoryImage(imageBytes) : null,
                 child: imageBytes == null
                     ? const Icon(Icons.person, size: 40)
                     : null,
@@ -291,7 +311,7 @@ class _CaseManagementState extends State<CaseManagement> {
           Expanded(
             flex: 3,
             child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection('ConfirmedCases').snapshots(),
+              stream: _confirmedCasesStream,
               builder: (context, confirmedSnapshot) {
                 if (confirmedSnapshot.connectionState ==
                     ConnectionState.waiting) {
@@ -305,17 +325,14 @@ class _CaseManagementState extends State<CaseManagement> {
                     .toSet();
 
                 return StreamBuilder<DocumentSnapshot>(
-                  stream: _firestore
-                      .collection('Meta')
-                      .doc('caseCounter')
-                      .snapshots(),
+                  stream: _caseCounterStream,
                   builder: (context, counterSnapshot) {
                     if (!counterSnapshot.hasData ||
                         !counterSnapshot.data!.exists) {
                       return const Center(
                         child: Text(
                           "No data.",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black54),
                         ),
                       );
                     }
@@ -352,7 +369,7 @@ class _CaseManagementState extends State<CaseManagement> {
                               ? "All cases are cleared!"
                               : "No case found matching '$_activeSearchQuery'",
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black54,
                             fontSize: 16,
                           ),
                         ),
@@ -363,7 +380,7 @@ class _CaseManagementState extends State<CaseManagement> {
                       itemCount: activeCasesList.length,
                       itemBuilder: (context, index) {
                         final caseId = activeCasesList[index];
-                        return _buildActiveCaseCard(caseId);
+                        return _buildActiveCaseCard(caseId, Key(caseId));
                       },
                     );
                   },
@@ -430,10 +447,7 @@ class _CaseManagementState extends State<CaseManagement> {
           Expanded(
             flex: 2,
             child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('ConfirmedCases')
-                  .orderBy('confirmedAt', descending: true)
-                  .snapshots(),
+              stream: _closedCasesListStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -442,7 +456,7 @@ class _CaseManagementState extends State<CaseManagement> {
                   return const Center(
                     child: Text(
                       "No closed cases.",
-                      style: TextStyle(color: Colors.white60),
+                      style: TextStyle(color: Colors.black54),
                     ),
                   );
                 }
@@ -462,7 +476,7 @@ class _CaseManagementState extends State<CaseManagement> {
                   return const Center(
                     child: Text(
                       "No NIC found.",
-                      style: TextStyle(color: Colors.white60),
+                      style: TextStyle(color: Colors.black54),
                     ),
                   );
                 }
@@ -483,9 +497,9 @@ class _CaseManagementState extends State<CaseManagement> {
     );
   }
 
-  Widget _buildActiveCaseCard(String caseId) {
+  Widget _buildActiveCaseCard(String caseId, Key key) {
     return Card(
-      key: Key(caseId),
+      key: key,
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 8,
       shadowColor: Colors.black26,
@@ -510,6 +524,7 @@ class _CaseManagementState extends State<CaseManagement> {
             iconColor: Colors.white,
             collapsedIconColor: Colors.white70,
 
+            // If the ID is in our set, it's expanded
             initiallyExpanded: _expandedCaseIds.contains(caseId),
             onExpansionChanged: (expanded) {
               setState(() {

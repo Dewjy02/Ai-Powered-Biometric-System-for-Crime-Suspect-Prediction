@@ -95,13 +95,10 @@ class CustomDrawerMenu extends StatelessWidget {
             context,
           ),
           _buildDrawerItem(4, Icons.file_present, "Case Management", context),
-          
-          // --- THIS IS THE UPDATE ---
-          // Only show this item if showCitizensData is true
           if (showCitizensData)
             _buildDrawerItem(
               5, 
-              Icons.file_present, // Or use Icons.manage_accounts
+              Icons.file_present, 
               "Citizens data Management", 
               context
             ),
@@ -137,8 +134,6 @@ class CustomDrawerMenu extends StatelessWidget {
         ),
         onTap: () {
           onItemSelected(index);
-
-          // Close drawer only on mobile
           if (Responsive.isMobile(context) && Navigator.canPop(context)) {
             Navigator.pop(context);
           }

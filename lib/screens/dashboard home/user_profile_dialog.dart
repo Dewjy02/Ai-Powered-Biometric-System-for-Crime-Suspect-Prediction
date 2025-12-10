@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:bio_metric_system/screens/login/sign_in.dart'; 
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart'; // Add file_picker to pubspec.yaml
+import 'package:file_picker/file_picker.dart'; 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -68,9 +69,23 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
     setState(() => _isUploading = true);
 
     try {
+      if (widget.uid == "admin_id") {
+         if (!mounted) return;
+         Navigator.pop(context);
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Admin profile is read-only."), backgroundColor: Colors.orange),
+        );
+        return;
+      }
+      int? nicAsInt = int.tryParse(_nicController.text.trim());
+      
+      if (nicAsInt == null) {
+        throw Exception("Invalid NIC format. Must be a number.");
+      }
+
       Map<String, dynamic> updateData = {
         'name': _nameController.text.trim(),
-        'nic': _nicController.text.trim(),
+        'nic': nicAsInt,
       };
 
       if (_newImageBytes != null) {
@@ -81,9 +96,6 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
           .collection('users')
           .doc(widget.uid)
           .set(updateData, SetOptions(merge: true));
-
-      // Update Auth Display Name
-      await FirebaseAuth.instance.currentUser?.updateDisplayName(_nameController.text.trim());
 
       if (!mounted) return;
       Navigator.pop(context); 
@@ -178,10 +190,13 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _nicController,
+                  enabled: false, 
                   decoration: const InputDecoration(
-                    labelText: "NIC",
+                    labelText: "NIC (Login ID)",
                     prefixIcon: Icon(Icons.badge_outlined),
                     border: OutlineInputBorder(),
+                    filled: true, 
+                    fillColor: Color(0xFFF5F5F5),
                   ),
                 ),
               ],
@@ -195,8 +210,16 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
           children: [
             TextButton.icon(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                if(context.mounted) Navigator.pop(context);
+                if (FirebaseAuth.instance.currentUser != null) {
+                   await FirebaseAuth.instance.signOut();
+                }
+                
+                if (!context.mounted) return;
+
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const SignIn()),
+                  (Route<dynamic> route) => false,
+                );
               },
               icon: const Icon(Icons.logout, color: Colors.red),
               label: const Text("Logout", style: TextStyle(color: Colors.red)),
