@@ -84,7 +84,14 @@ def _preprocess_image(img, target_shape=(96, 96)):
     if len(img.shape) > 2 and img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    img = cv2.equalizeHist(img)
+    img = cv2.normalize(img, None, 0, 255, cv2.NORM_MINMAX)
+    img = cv2.medianBlur(img, 3)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+    img = cv2.GaussianBlur(img, (3, 3), 0)
+
+    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8,8))
+    img = clahe.apply(img)
     img = cv2.resize(img, target_shape, interpolation=cv2.INTER_AREA)
     img = img.astype(np.float32) / 255.0
     
@@ -104,10 +111,11 @@ def get_similarity_score(img1_raw, img2_raw, model, shape):
         proc_img2 = _preprocess_image(img2_raw, shape)
         vec2 = model.predict(proc_img2, verbose=0)[0]
 
-        best_score = 0.0
-        angles = [-10, 0, 10] 
+        coarse_angles = list(range(-45, 46, 2))
+        best_angle = 0
+        min_distance = float('inf')
         
-        for angle in angles:
+        for angle in coarse_angles:
             if angle == 0:
                 rotated_img = img1_raw
             else:
@@ -116,12 +124,24 @@ def get_similarity_score(img1_raw, img2_raw, model, shape):
             proc_img1 = _preprocess_image(rotated_img, shape)
             vec1 = model.predict(proc_img1, verbose=0)[0]
             distance = np.linalg.norm(vec1 - vec2)
-            score = np.exp(-10 * (distance ** 2))
             
-            if score > best_score:
-                best_score = score
+            if distance < min_distance:
+                min_distance = distance
+                best_angle = angle
         
-        return max(0.0, min(1.0, best_score))
+        fine_angles = [best_angle - 1.0, best_angle - 0.5, best_angle + 0.5, best_angle + 1.0]
+        
+        for angle in fine_angles:
+            rotated_img = rotate_image(img1_raw, angle)
+            proc_img1 = _preprocess_image(rotated_img, shape)
+            vec1 = model.predict(proc_img1, verbose=0)[0]
+            distance = np.linalg.norm(vec1 - vec2)
+            
+            if distance < min_distance:
+                min_distance = distance
+
+        score = np.exp(-55 * (min_distance ** 2))
+        return max(0.0, min(1.0, score))
 
     except Exception as e:
         print(f"Error in scoring: {e}")
@@ -185,7 +205,7 @@ def match_fingerprint():
                 EMBEDDING_MODEL, 
                 MODEL_INPUT_SHAPE
             )
-            if score > 0.30: 
+            if score > 0.10: 
                 matches.append({
                     "nic": doc.id,
                     "name": citizen.get("name", "N/A"),
@@ -201,7 +221,7 @@ def match_fingerprint():
 
     matches.sort(key=lambda x: x["score"], reverse=True)
     
-    return jsonify({"matches": matches[:5]})
+    return jsonify({"matches": matches[:3]})
 
 if __name__ == "__main__":
     if EMBEDDING_MODEL is None:
