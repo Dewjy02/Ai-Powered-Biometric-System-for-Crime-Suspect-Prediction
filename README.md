@@ -4,16 +4,31 @@ A cross-platform **Advanced Fingerprint Matching System** built with Flutter and
 
 ## 📸 Screenshots
 
-| Login Screen (Web/Desktop) | Login Screen (Mobile) |
-|:--------------------------:|:---------------------:|
-| ![Login Desktop] <img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" />| 
-  ![Login Mobile](path/to/your/login_mobile_ss.png) |
+Login Screen (Mobile)
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" />| 
 
-| Dashboard | Admin View |
-|:---------:|:----------:|
-| ![Dashboard](path/to/your/dashboard_ss.png) | ![Admin View](path/to/your/admin_ss.png) |
+Create Account
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/dd933775-2e4d-4f1b-901d-7abdfef18cd1" />
 
-<!-- Replace 'path/to/your/...' with the actual paths to your images in the repository -->
+Dashboard
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/7b9661bb-16f7-4dcf-976f-5aa47060140e" />
+
+drawer
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/ecf65d04-b49e-4a27-8e07-ff2266b8cb84" />
+
+Upload fingerprint
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/0b38a353-3109-41a1-9ee3-f35c9783ea94" />
+
+Match Result
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/576261f8-2a4d-417e-8243-aa8de508c0d6" /> |<img width="1311" height="969" alt="Image" src="https://github.com/user-attachments/assets/bd6cfb12-5da6-4495-a445-1a8fcfdcbf71" />
+
+Case Management
+<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/1e68c782-8780-4f04-b025-493596769250" />
+
+citizen Management
+<img width="1311" height="906" alt="Image" src="https://github.com/user-attachments/assets/760e01da-98f5-4c49-aa9f-146564643b7e" />
+
+
 
 ## 🚀 Features
 
