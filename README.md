@@ -30,20 +30,49 @@ A cross-platform **Advanced Fingerprint Matching System** built with Flutter and
 - **Admin Panel:** Special access controls for system administrators.
 - **Biometric Data Management:** Interface for handling fingerprint data (integration pending/active).
 
-## 🛠 Tech Stack
+### 1. Frontend (Flutter)
+The user interface is built using **Flutter**, ensuring a seamless experience across Web, Windows, Linux, and Mobile.
+- **Responsive Design:** Adapts to different screen sizes (Desktop vs Mobile).
+- **Key Features:** User Login, Admin Dashboard, File Uploads.
 
-### Frontend
-- **Framework:** [Flutter](https://flutter.dev/)
-- **Language:** Dart
-- **Dependencies:** `lottie`, `file_picker`, `google_fonts`, `dotted_border`
+### 2. Backend (Firebase)
+- **Cloud Firestore:** Stores user data, logs, and authentication details.
+- **Authentication:** Verifies user credentials (NIC/Password) against the database.
 
-### Backend
-- **Platform:** Firebase
-- **Database:** Cloud Firestore (NoSQL)
-- **Auth:** Custom Firestore-based authentication / Firebase Auth
+### 3. Biometric Engine (Python)
+The core fingerprint matching logic is handled by a Python script: `fingerprint_matcher.py`.
+- **Functionality:** Processes fingerprint images and performs matching algorithms to verify identity.
+- **Integration:** Works alongside the main application to provide accurate biometric verification results.
 
-## 📦 Installation
+## 🚀 Getting Started
 
-1. **Clone the repository**
+### Prerequisites
+- Flutter SDK
+- Python 3.x
+- Firebase Project configured
+
+### Installation
+
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/bio_metric_system.git
+   git clone https://github.com/your-repo/bio_metric_system.git
+   ```
+
+2. **Flutter App:**
+   ```bash
+   cd bio_metric_system
+   flutter pub get
+   flutter run
+   ```
+
+3. **Python Backend:**
+   Ensure you have the required Python libraries installed (e.g., OpenCV, NumPy).
+   ```bash
+   # Example installation
+   pip install opencv-python numpy
+   python fingerprint_matcher.py
+   ```
+
+## 🔑 Admin Access
+- **Default Admin ID:** `admin`
+- **Default Password:** `admin123`
