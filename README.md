@@ -24,7 +24,7 @@ A cross-platform **Advanced Fingerprint Matching System** built with Flutter and
 
 ## 🚀 Features
 
-- **Cross-Platform Support:** Runs smoothly on Android, iOS, Web, Windows, and Linux.
+- **Cross-Platform Support:** Runs smoothly on Android, iOS, and Web.
 - **Responsive Design:** Adaptive UI that fits large desktop screens and smaller mobile devices.
 - **User Authentication:** Secure login system verifying credentials against a cloud database.
 - **Admin Panel:** Special access controls for system administrators.
