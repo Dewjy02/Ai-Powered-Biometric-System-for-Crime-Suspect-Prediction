@@ -4,29 +4,21 @@ A cross-platform **Advanced Fingerprint Matching System** built with Flutter and
 
 ## 📸 Screenshots
 
-Login Screen (Mobile)
-<img width="250px" alt="Image" src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" /> 
+### 📱 Mobile App Interface
 
-Create Account
-<img width="250px"  alt="Image" src="https://github.com/user-attachments/assets/dd933775-2e4d-4f1b-901d-7abdfef18cd1" />
+| Login Screen | Create Account | Dashboard |
+| :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" width="250" /> | <img src="https://github.com/user-attachments/assets/dd933775-2e4d-4f1b-901d-7abdfef18cd1" width="250" /> | <img src="https://github.com/user-attachments/assets/7b9661bb-16f7-4dcf-976f-5aa47060140e" width="250" /> |
 
-Dashboard
-<img width="250px"  alt="Image" src="https://github.com/user-attachments/assets/7b9661bb-16f7-4dcf-976f-5aa47060140e" />
+| Drawer Menu | Upload Fingerprint | Case Management |
+| :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/ecf65d04-b49e-4a27-8e07-ff2266b8cb84" width="250" /> | <img src="https://github.com/user-attachments/assets/0b38a353-3109-41a1-9ee3-f35c9783ea94" width="250" /> | <img src="https://github.com/user-attachments/assets/1e68c782-8780-4f04-b025-493596769250" width="250" /> |
 
-drawer
-<img width="250px" alt="Image" src="https://github.com/user-attachments/assets/ecf65d04-b49e-4a27-8e07-ff2266b8cb84" />
+### 📊 Results & Management
 
-Upload fingerprint
-<img width="250px"  alt="Image" src="https://github.com/user-attachments/assets/0b38a353-3109-41a1-9ee3-f35c9783ea94" />
-
-Match Result
-<img width="250px" alt="Image" src="https://github.com/user-attachments/assets/576261f8-2a4d-417e-8243-aa8de508c0d6" /> |<img width="1311" height="969" alt="Image" src="https://github.com/user-attachments/assets/bd6cfb12-5da6-4495-a445-1a8fcfdcbf71" />
-
-Case Management
-<img width="250px" alt="Image" src="https://github.com/user-attachments/assets/1e68c782-8780-4f04-b025-493596769250" />
-
-citizen Management
-<img width="250px"  alt="Image" src="https://github.com/user-attachments/assets/760e01da-98f5-4c49-aa9f-146564643b7e" />
+| Match Result (Mobile) | Match Result (Detail) | Citizen Management |
+| :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/576261f8-2a4d-417e-8243-aa8de508c0d6" width="250" /> | <img src="https://github.com/user-attachments/assets/bd6cfb12-5da6-4495-a445-1a8fcfdcbf71" width="250" /> | <img src="https://github.com/user-attachments/assets/760e01da-98f5-4c49-aa9f-146564643b7e" width="250" /> |
 
 
 
