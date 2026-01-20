@@ -5,7 +5,7 @@ A cross-platform **Advanced Fingerprint Matching System** built with Flutter and
 ## 📸 Screenshots
 
 Login Screen (Mobile)
-<img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" />| 
+<img width="250px" alt="Image" src="https://github.com/user-attachments/assets/5a6464f4-4e26-4607-8387-ec6e86461af0" /> 
 
 Create Account
 <img width="1440" height="3120" alt="Image" src="https://github.com/user-attachments/assets/dd933775-2e4d-4f1b-901d-7abdfef18cd1" />
