@@ -74,5 +74,6 @@ The core fingerprint matching logic is handled by a Python script: `fingerprint_
    ```
 
 ## 🔑 Admin Access
+The admin ID and Password work only in Web
 - **Default Admin ID:** `admin`
 - **Default Password:** `admin123`
